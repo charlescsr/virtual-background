@@ -17,8 +17,18 @@ RUN npm install
 # Setup our app as the entrypoint
 COPY app.js /src/
 
-# Ensure we can get enough GPU memory
-# Unfortunately tfjs-node-gpu exposes no gpu configuration :(
-#ENV TF_FORCE_GPU_ALLOW_GROWTH=true
+# find -name libtensorflow*
+# prebuilt libtensorflow 1.15 requires gpu cuda compute capability of 6.0
+# replace tensorflow with those build with bazel.
 
-ENTRYPOINT node /src/app.js
+COPY libtensorflow_framework.so.1.15.0 /src/node_modules/@tensorflow/tfjs-node-gpu/deps/lib/libtensorflow_framework.so.1.15.0
+COPY libtensorflow.so.1.15.0 /src/node_modules/@tensorflow/tfjs-node-gpu/deps/lib/libtensorflow.so.1.15.0
+
+# not needed.
+#ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+
+# Ensure we can get enough GPU memory
+# need below flag! https://stackoverflow.com/questions/38303974/tensorflow-running-error-with-cublas
+ENV TF_FORCE_GPU_ALLOW_GROWTH=true
+
+#ENTRYPOINT node /src/app.js
