@@ -79,11 +79,11 @@ def get_frame(cap, background_scaled, speed=True):
     for c in range(frame.shape[2]):
        frame[:,:,c] = frame[:,:,c]*mask + background_scaled[:,:,c]*inv_mask
     '''
-    style = 'green'
+    style = os.environ.get('CAM_STYLE','normal')
     for c in range(frame.shape[2]):
         
         # segmentPersonParts - returns 255 for non person pixels
-        if style == 'green':
+        if style == 'GREEN':
         
             if c == 1:
                 frame[:,:,c][mask!=255] = 100+5*mask[mask!=255]
@@ -93,6 +93,7 @@ def get_frame(cap, background_scaled, speed=True):
             frame[:,:,c][mask==255] = background_scaled[:,:,c][mask==255]
 
         else:
+
             frame[:,:,c][mask==255] = background_scaled[:,:,c][mask==255]
 
     return frame
