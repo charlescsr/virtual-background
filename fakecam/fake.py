@@ -1,6 +1,8 @@
 import os
 import cv2
+from PIL import Image
 import numpy as np
+import pathlib
 import requests
 import pyfakewebcam
 import traceback
@@ -101,16 +103,20 @@ if __name__ == '__main__':
     fake = pyfakewebcam.FakeWebcam(fake_device, width, height)
 
     # load the virtual background
-    background_file_path = "/data/background.jpg"
-    background = cv2.imread(background_file_path)
-    background_scaled = cv2.resize(background, (width, height))
+    background_file_path = os.path.abspath("background.jpg")
+    background = Image.open(background_file_path).convert('RGB')
+    background_scaled = background.resize((width, height))
 
     org_background_file_size = os.stat(background_file_path).st_size
 
     # frames forever
     while True:
 
-        frame = get_frame(cap, background_scaled)
+        open_cv_image = np.array(background_scaled) 
+        # Convert RGB to BGR 
+        open_cv_image = open_cv_image[:, :, ::-1].copy() 
+
+        frame = get_frame(cap, open_cv_image)
         # fake webcam expects RGB
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         fake.schedule_frame(frame)
@@ -118,6 +124,6 @@ if __name__ == '__main__':
         if int(time.time()) % 3 == 0:
             updated_background_file_size = os.stat(background_file_path).st_size
             if updated_background_file_size != org_background_file_size:
-                background = cv2.imread(background_file_path)
-                background_scaled = cv2.resize(background,(width, height))
+                background = Image.open(r"background.jpg")
+                background_scaled = background.resize((width, height))
                 org_background_file_size = updated_background_file_size
