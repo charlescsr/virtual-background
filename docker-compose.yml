@@ -4,7 +4,7 @@ services:
     runtime: nvidia
     build:
       context: ./bodypix
-      dockerfile: /home/charlescsr/virtual-background/bodypix/Dockerfile
+      dockerfile: /home/charlescsr/vbkd/bodypix/Dockerfile
     image: bodypix
     restart: always
     ports:
@@ -15,7 +15,7 @@ services:
   fakecam:
     build:
       context: ./fakecam
-      dockerfile: /home/charlescsr/virtual-background/fakecam/Dockerfile
+      dockerfile: /home/charlescsr/vbkd/fakecam/Dockerfile
     image: fakecam
     restart: always
     links:
@@ -31,7 +31,7 @@ services:
       CAMERA_FPS: "24"
       BODYPIX_URL: http://bodypix:9000
     volumes:
-        - /home/charlescsr/virtual-background/data:/data
+        - /home/charlescsr/vbkd/data:/data
     devices:
         - "/dev/video0:/dev/video0"
         - "/dev/video20:/dev/video20"
