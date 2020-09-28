@@ -8,7 +8,7 @@ services:
     image: bodypix
     restart: always
     ports:
-      - 9000:9000
+      - 8000:8000
     command: node /src/app.js
     devices:
       - /dev/nvidia0:/dev/nvidia0
@@ -29,7 +29,7 @@ services:
       #CAMERA_WIDTH: "1280"
       #CAMERA_HEIGHT: "720"
       CAMERA_FPS: "24"
-      BODYPIX_URL: http://bodypix:9000
+      BODYPIX_URL: http://bodypix:8000
     volumes:
         - /home/charlescsr/vbkd/data:/data
     devices:

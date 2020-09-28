@@ -8,7 +8,7 @@ import pyfakewebcam
 import traceback
 import time
 
-def get_mask(frame, bodypix_url=os.environ.get("BODYPIX_URL","http://bodypix:9000")):
+def get_mask(frame, bodypix_url=os.environ.get("BODYPIX_URL","http://bodypix:8000")):
     _, data = cv2.imencode(".jpg", frame)
     r = requests.post(
         url=bodypix_url,
@@ -73,7 +73,7 @@ def get_frame(cap, background_scaled, speed=True):
     
     # post-process mask and frame
     mask = post_process_mask(mask)
-    frame = hologram_effect(frame)
+    #frame = hologram_effect(frame)
 
     # composite the foreground and background
     inv_mask = 1-mask
