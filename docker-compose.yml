@@ -4,7 +4,7 @@ services:
     runtime: nvidia
     build:
       context: ./bodypix
-      dockerfile: ./bodypix/
+      dockerfile: Dockerfile
     image: bodypix
     restart: always
     ports:
@@ -15,7 +15,7 @@ services:
   fakecam:
     build:
       context: ./fakecam
-      dockerfile: ./fakecam/
+      dockerfile: Dockerfile
     image: fakecam
     restart: always
     links:
